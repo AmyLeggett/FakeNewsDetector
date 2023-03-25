@@ -38,7 +38,6 @@ def home():
         text = request.form.get("statement")
         state = tokenizer.encode(text.lower(), return_tensors="pt")
         state = model(state)
-        return render_template("result.html", term=state)
         state = preprocessing.normalize(state.logits.detach().numpy())
         pred = loaded_model.predict(state)
         print(pred)
