@@ -1,5 +1,5 @@
 import numpy as np
-from flask import Flask, render_template
+from flask import Flask, render_template, session
 from flask import request
 import pickle
 from sklearn import preprocessing
@@ -9,9 +9,10 @@ import gunicorn
 
 app = Flask(__name__)
 # 1.21.6
+# 1.24.2
 class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
 explainer = LimeTextExplainer(class_names=class_names)
-
+app.secret_key = "key"
 
 def get_array(text):
     value = []
@@ -32,30 +33,30 @@ def get_array(text):
 
 @app.route('/', methods=["GET", "POST"])
 def home():
-    global text
     if request.method == "POST":
         model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
         tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
         filename = 'prajjwal1-bert-small-tree-main-6label'
         loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
+        session['text'] = text
         state = tokenizer.encode(text.lower(), return_tensors="pt")
         state = model(state)
         state = preprocessing.normalize(state.logits.detach().numpy())
         pred = loaded_model.predict(state)
         print(pred)
         if pred == [0]:
-            return render_template("result.html", pred=pred, term='False', color_change='#FF3333'), text
+            return render_template("result.html", pred=pred, term='False', color_change='#FF3333')
         if pred == [1]:
-            return render_template("result.html", pred=pred, term='Half-true', color_change='#F1A008'), text
+            return render_template("result.html", pred=pred, term='Half-true', color_change='#F1A008')
         if pred == [2]:
-            return render_template("result.html", pred=pred, term='Mostly-true', color_change='#92DC19'), text
+            return render_template("result.html", pred=pred, term='Mostly-true', color_change='#92DC19')
         if pred == [3]:
-            return render_template("result.html", pred=pred, term='True', color_change='#66CC00'), text
+            return render_template("result.html", pred=pred, term='True', color_change='#66CC00')
         if pred == [4]:
-            return render_template("result.html", pred=pred, term='Barely-true', color_change='#F15208'), text
+            return render_template("result.html", pred=pred, term='Barely-true', color_change='#F15208')
         if pred == [5]:
-            return render_template("result.html", pred=pred, term='Liar', color_change='#000000'), text
+            return render_template("result.html", pred=pred, term='Liar', color_change='#000000')
     return render_template("home.html")
 
 
@@ -70,6 +71,7 @@ def about():
 
 @app.route('/exp', methods=["GET", "POST"])
 def exp():
+    text = session.get('text', None)
     exp = explainer.explain_instance(text, get_array,
                                      num_features=5, num_samples=50, labels=[1])
     exp = exp.as_html()
