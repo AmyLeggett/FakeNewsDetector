@@ -67,9 +67,9 @@ def home():
             exp = exp.as_html()
             return render_template("result.html", pred=pred, term='Barely-true', color_change='#F15208', exp=exp)
         if pred == [5]:
-            #exp = explainer.explain_instance(text, get_array,
-                                             #num_features=5, num_samples=50, labels=[5])
-            #exp = exp.as_html()
+            exp = explainer.explain_instance(text, get_array,
+                                             num_features=5, num_samples=50, labels=[5])
+            exp = exp.as_html()
             return render_template("result.html", pred=pred, term='Liar', color_change='#000000')
     return render_template("home.html")
 
