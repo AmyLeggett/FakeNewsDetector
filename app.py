@@ -73,6 +73,6 @@ def about():
 def exp():
     text = session.get('text', None)
     exp = explainer.explain_instance(text, get_array,
-                                     num_features=5, num_samples=50, labels=[1])
+                                     num_features=5, num_samples=10, labels=[1])
     exp = exp.as_html()
     return render_template("exp.html", exp=exp)
