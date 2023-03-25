@@ -11,10 +11,7 @@ app = Flask(__name__)
 
 class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
 explainer = LimeTextExplainer(class_names=class_names)
-model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
-tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
-filename = 'prajjwal1-bert-small-tree-main-6label'
-loaded_model = pickle.load(open(filename, 'rb'))
+
 
 def get_array(text):
     value = []
@@ -34,6 +31,10 @@ def get_array(text):
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
+        model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
+        tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
+        filename = 'prajjwal1-bert-small-tree-main-6label'
+        loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
         state = tokenizer.encode(text.lower(), return_tensors="pt")
         state = model(state)
@@ -67,9 +68,9 @@ def home():
             exp = exp.as_html()
             return render_template("result.html", pred=pred, term='Barely-true', color_change='#F15208', exp=exp)
         if pred == [5]:
-            exp = explainer.explain_instance(text, get_array,
-                                             num_features=5, num_samples=50, labels=[5])
-            exp = exp.as_html()
+            #exp = explainer.explain_instance(text, get_array,
+                                             #num_features=5, num_samples=50, labels=[5])
+            #exp = exp.as_html()
             return render_template("result.html", pred=pred, term='Liar', color_change='#000000', exp=exp)
     return render_template("home.html")
 
