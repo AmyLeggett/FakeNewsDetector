@@ -40,6 +40,7 @@ def home():
         state = model(state)
         state = preprocessing.normalize(state.logits.detach().numpy())
         pred = loaded_model.predict(state)
+        return render_template("result.html", pred=pred)
         print(pred)
         if pred == [0]:
             #exp = explainer.explain_instance(text, get_array,
