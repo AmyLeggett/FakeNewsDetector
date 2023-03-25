@@ -40,7 +40,6 @@ def home():
         state = model(state)
         state = preprocessing.normalize(state.logits.detach().numpy())
         pred = loaded_model.predict(state)
-        return render_template("result.html", term=pred)
         print(pred)
         if pred == [0]:
             #exp = explainer.explain_instance(text, get_array,
@@ -71,7 +70,7 @@ def home():
             #exp = explainer.explain_instance(text, get_array,
                                              #num_features=5, num_samples=50, labels=[5])
             #exp = exp.as_html()
-            return render_template("result.html", pred=pred, term='Liar', color_change='#000000', exp=exp)
+            return render_template("result.html", pred=pred, term='Liar', color_change='#000000')
     return render_template("home.html")
 
 
