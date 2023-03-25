@@ -14,6 +14,7 @@ class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pant
 explainer = LimeTextExplainer(class_names=class_names)
 app.secret_key = "key"
 
+
 def get_array(text):
     value = []
     model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
@@ -22,7 +23,7 @@ def get_array(text):
     loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
-        text[i] = tokenizer.encode(text[i], return_tensors="pt", max_length=512)
+        text[i] = tokenizer.encode(text[i], return_tensors="pt", max_length=512, truncation=True)
         text[i] = model(text[i])
         text[i] = text[i].logits.detach().numpy()
         proba = loaded_model.predict_proba(text[i])
