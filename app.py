@@ -11,7 +11,10 @@ app = Flask(__name__)
 
 class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
 explainer = LimeTextExplainer(class_names=class_names)
-
+model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
+tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
+filename = 'prajjwal1-bert-small-tree-main-6label'
+loaded_model = pickle.load(open(filename, 'rb'))
 
 def get_array(text):
     value = []
@@ -31,10 +34,6 @@ def get_array(text):
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
-        tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
-        filename = 'prajjwal1-bert-small-tree-main-6label'
-        loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
         state = tokenizer.encode(text.lower(), return_tensors="pt")
         state = model(state)
