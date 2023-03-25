@@ -42,9 +42,9 @@ def home():
         pred = loaded_model.predict(state)
         print(pred)
         if pred == [0]:
-            exp = explainer.explain_instance(text, get_array,
-                                             num_features=5, num_samples=50, labels=[0])
-            exp = exp.as_html()
+            #exp = explainer.explain_instance(text, get_array,
+                                             #num_features=5, num_samples=50, labels=[0])
+            #exp = exp.as_html()
             return render_template("result.html", pred=pred, term='False', color_change='#FF3333')
         if pred == [1]:
             exp = explainer.explain_instance(text, get_array,
