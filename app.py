@@ -17,9 +17,9 @@ app.secret_key = "key"
 
 def get_array(text):
     value = []
-    model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
-    tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
-    filename = 'prajjwal1-bert-small-tree-main-6label'
+    model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+    tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+    filename = 'bert-base-multilingual-uncased-sentiment-6label'
     loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
@@ -28,16 +28,17 @@ def get_array(text):
         text[i] = text[i].logits.detach().numpy()
         proba = loaded_model.predict_proba(text[i])
         value.append(proba.tolist()[0])
-        print(value)
+    print(value)
     return np.array(value)
 
 
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        model = AutoModelForSequenceClassification.from_pretrained("prajjwal1/bert-small")
-        tokenizer = AutoTokenizer.from_pretrained("prajjwal1/bert-small")
-        filename = 'prajjwal1-bert-small-tree-main-6label'
+        session.pop("text", None)
+        model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+        tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+        filename = 'bert-base-multilingual-uncased-sentiment-6label'
         loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
         session['text'] = text
@@ -73,7 +74,9 @@ def about():
 @app.route('/exp', methods=["GET", "POST"])
 def exp():
     text = session.get('text', None)
+    print(text)
     exp = explainer.explain_instance(text, get_array,
-                                     num_features=5, num_samples=10)
+                                     num_features=5, num_samples=50)
     exp = exp.as_html()
+    session.pop("text", None)
     return render_template("exp.html", exp=exp)
