@@ -17,9 +17,9 @@ app.secret_key = "key"
 
 def get_array(text):
     value = []
-    model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-    tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-    filename = 'bert-base-multilingual-uncased-sentiment-6label'
+    model = AutoModelForSequenceClassification.from_pretrained("philschmid/tiny-bert-sst2-distilled")
+    tokenizer = AutoTokenizer.from_pretrained("philschmid/tiny-bert-sst2-distilled")
+    filename = 'philschmid-tiny-bert-sst2-distilled-6label'
     loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
@@ -36,9 +36,9 @@ def get_array(text):
 def home():
     if request.method == "POST":
         session.pop("text", None)
-        model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-        tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
-        filename = 'bert-base-multilingual-uncased-sentiment-6label'
+        model = AutoModelForSequenceClassification.from_pretrained("philschmid/tiny-bert-sst2-distilled")
+        tokenizer = AutoTokenizer.from_pretrained("philschmid/tiny-bert-sst2-distilled")
+        filename = 'philschmid-tiny-bert-sst2-distilled-6label'
         loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
         session['text'] = text
