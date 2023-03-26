@@ -14,19 +14,21 @@ class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pant
 explainer = LimeTextExplainer(class_names=class_names)
 app.secret_key = "key"
 
-
+model = AutoModelForSequenceClassification.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+tokenizer = AutoTokenizer.from_pretrained("nlptown/bert-base-multilingual-uncased-sentiment")
+filename = 'bert-base-multilingual-uncased-sentiment-6label'
+loaded_model = pickle.load(open(filename, 'rb'))
 def get_array(text):
     value = []
-    model = AutoModelForSequenceClassification.from_pretrained("philschmid/tiny-bert-sst2-distilled")
-    tokenizer = AutoTokenizer.from_pretrained("philschmid/tiny-bert-sst2-distilled")
-    filename = 'philschmid-tiny-bert-sst2-distilled-6label'
-    loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
-        text[i] = tokenizer.encode(text[i], return_tensors="pt", max_length=512, truncation=True)
+        text[i] = tokenizer.encode(text[i], return_tensors="pt")
         text[i] = model(text[i])
         text[i] = text[i].logits.detach().numpy()
+        pred = loaded_model.predict(text[i])
         proba = loaded_model.predict_proba(text[i])
+        print(proba)
+        print(pred)
         value.append(proba.tolist()[0])
     print(value)
     return np.array(value)
@@ -36,10 +38,6 @@ def get_array(text):
 def home():
     if request.method == "POST":
         session.pop("text", None)
-        model = AutoModelForSequenceClassification.from_pretrained("philschmid/tiny-bert-sst2-distilled")
-        tokenizer = AutoTokenizer.from_pretrained("philschmid/tiny-bert-sst2-distilled")
-        filename = 'philschmid-tiny-bert-sst2-distilled-6label'
-        loaded_model = pickle.load(open(filename, 'rb'))
         text = request.form.get("statement")
         session['text'] = text
         state = tokenizer.encode(text.lower(), return_tensors="pt")
@@ -76,7 +74,7 @@ def exp():
     text = session.get('text', None)
     print(text)
     exp = explainer.explain_instance(text, get_array,
-                                     num_features=5, num_samples=50)
+                                     num_features=5, num_samples=500,labels=[5])
     exp = exp.as_html()
     session.pop("text", None)
     return render_template("exp.html", exp=exp)
