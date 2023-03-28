@@ -14,9 +14,9 @@ class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pant
 explainer = LimeTextExplainer(class_names=class_names)
 app.secret_key = "key"
 
-model = AutoModelForSequenceClassification.from_pretrained("dslim/bert-base-NER")
-tokenizer = AutoTokenizer.from_pretrained("dslim/bert-base-NER")
-filename = 'bert-base-NER-6label'
+model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+filename = 'bert-small-finetuned-wnut17-ner-6label'
 loaded_model = pickle.load(open(filename, 'rb'))
 
 
@@ -29,6 +29,7 @@ def get_array(text):
         text[i] = text[i].logits.detach().numpy()
         proba = loaded_model.predict_proba(text[i])
         value.append(proba.tolist()[0])
+        print(loaded_model.predict(text[i]))
     print(value)
     return np.array(value)
 
