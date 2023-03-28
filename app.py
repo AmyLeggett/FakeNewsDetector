@@ -39,7 +39,7 @@ def home():
     if request.method == "POST":
         text = request.form.get("statement")
         exp = explainer.explain_instance(text, get_array,
-                                         num_features=5, num_samples=500, labels=[3])
+                                         num_features=5, num_samples=50, labels=[3])
         exp = exp.as_html()
         return render_template('exp.html', exp=exp)
     return render_template("home.html")
