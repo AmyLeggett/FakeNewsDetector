@@ -1,3 +1,3 @@
 import multiprocessing
 
-timeout = 200
+timeout = 600

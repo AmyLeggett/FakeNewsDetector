@@ -12,8 +12,6 @@ app = Flask(__name__)
 # 1.24.2
 class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
 explainer = LimeTextExplainer(class_names=class_names)
-app.secret_key = "key"
-
 
 
 def get_array(text):
@@ -29,8 +27,7 @@ def get_array(text):
         text[i] = text[i].logits.detach().numpy()
         proba = loaded_model.predict_proba(text[i])
         value.append(proba.tolist()[0])
-        print(loaded_model.predict(text[i]))
-    print(value)
+        np.random.seed(16)
     return np.array(value)
 
 

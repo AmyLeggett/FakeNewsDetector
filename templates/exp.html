@@ -21,12 +21,19 @@
 
 </nav>
 <div id = form_text class="container-fluid bg-dark p-5 text-white text-center">
-    <h1>The result is</h1>
+    <h1>The result is...</h1>
 </div>
 <div id = form_text class="container-fluid bg-light p-5 text-white text-center">
 </div>
 <div id = form_text class="container-fluid bg-light p-5 text-white text-center">
-    <h1>{{ exp|safe }}</h1>
+    <center>{{ exp|safe }}</center>
 </div>
+<div class="container-fluid p-5 bg-light text-white text-center align-bottom">
+	<h1 class = 'text-black' >Reasoning</h1>
+	<p class = 'text-bg-light'>The diagram above shows the probabilities for each possible class as
+    assigned by the classifier. The most influential words are also highlighted and labeled to describe which
+    class they have been identified as. </p>
+</div>
+
 </body>
 </html>
