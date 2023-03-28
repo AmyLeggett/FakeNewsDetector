@@ -10,8 +10,6 @@ import gunicorn
 app = Flask(__name__)
 # 1.21.6
 # 1.24.2
-class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
-explainer = LimeTextExplainer(class_names=class_names)
 
 
 def get_array(text):
@@ -34,9 +32,11 @@ def get_array(text):
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
+        class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
+        explainer = LimeTextExplainer(class_names=class_names)
         text = request.form.get("statement")
         exp = explainer.explain_instance(text, get_array,
-                                         num_features=5, num_samples=50, labels=[3])
+                                         num_features=5, num_samples=10, labels=[3])
         exp = exp.as_html()
         return render_template('exp.html', exp=exp)
     return render_template("home.html")
