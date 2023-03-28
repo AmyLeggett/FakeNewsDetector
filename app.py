@@ -14,14 +14,14 @@ class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pant
 explainer = LimeTextExplainer(class_names=class_names)
 app.secret_key = "key"
 
-model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-filename = 'bert-small-finetuned-wnut17-ner-6label'
-loaded_model = pickle.load(open(filename, 'rb'))
 
 
 def get_array(text):
     value = []
+    model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+    tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+    filename = 'bert-small-finetuned-wnut17-ner-6label'
+    loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
         text[i] = tokenizer.encode(text[i], return_tensors="pt")
