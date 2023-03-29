@@ -4,6 +4,7 @@
 
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>Explanation</title>
@@ -28,6 +29,20 @@
 <div id = form_text class="container-fluid bg-light p-5 text-white text-center">
     <center>{{ exp|safe }}</center>
 </div>
+<div id="myPlot" style="width:100%;max-width:700px"></div>
+<script type="text/javascript">
+    var xArray = ['false', 'half-true', 'mostly-true', 'true', 'barely-true', 'Liar']
+    var yArray = JSON.parse('{{ y }}')
+    console.log(yArray)
+    console.log(xArray)
+    var data = [{
+        x: xArray,
+        y: yArray,
+        type: "bar"  }];
+    var layout = {title:"World Wide Wine Production"};
+
+Plotly.newPlot("myPlot", data, layout);
+</script>
 <div class="container-fluid p-5 bg-light text-white text-center align-bottom">
 	<h1 class = 'text-black' >Reasoning</h1>
 	<p class = 'text-bg-light'>The diagram above shows the probabilities for each possible class as

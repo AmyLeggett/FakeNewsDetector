@@ -1,3 +1,5 @@
+import io
+
 import numpy as np
 from flask import Flask, render_template, session
 from flask import request
@@ -6,8 +8,11 @@ from sklearn import preprocessing
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from lime.lime_text import LimeTextExplainer
 import gunicorn
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
+app.secret_key = 'key'
+
 # 1.21.6
 # 1.24.2
 
@@ -25,6 +30,7 @@ def get_array(text):
         text[i] = text[i].logits.detach().numpy()
         proba = loaded_model.predict_proba(text[i])
         value.append(proba.tolist()[0])
+        print(value)
         np.random.seed(16)
     return np.array(value)
 
@@ -32,13 +38,17 @@ def get_array(text):
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
-        class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "pants-on-fire"]
+        class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "Liar"]
         explainer = LimeTextExplainer(class_names=class_names)
         text = request.form.get("statement")
         exp = explainer.explain_instance(text, get_array,
-                                         num_features=5, num_samples=10, labels=[3])
+                                         num_features=5, num_samples=10, labels=(1,))
+        prob = exp.predict_proba
+        x = class_names
+        y = list(prob)
+        print(x)
         exp = exp.as_html()
-        return render_template('exp.html', exp=exp)
+        return render_template('exp.html', exp=exp, y=y)
     return render_template("home.html")
 
 
