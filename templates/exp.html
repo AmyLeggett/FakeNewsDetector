@@ -24,31 +24,27 @@
 <div id = form_text class="container-fluid bg-dark p-5 text-white text-center">
     <h1>The result is...</h1>
 </div>
-<div id = form_text class="container-fluid bg-light p-5 text-white text-center">
-</div>
-<div id = form_text class="container-fluid bg-light p-5 text-white text-center">
+<div class="container-fluid p-5 bg-light text-white text-center align-bottom">
+	<h1 class = 'text-black' >Reasoning</h1>
+	<p class = 'text-bg-light'>The diagram below shows the probabilities for each possible class as
+    assigned by the classifier. The total may not add up to exactly 100% due to rounding. Below that, the most influential
+        words are also highlighted and labeled to describe which
+    class they have been identified as. </p>
+    <center><div id="myPlot" style="width:75%;max-width:700px;"></div></center>
     <center>{{ exp|safe }}</center>
 </div>
-<div id="myPlot" style="width:100%;max-width:700px"></div>
 <script type="text/javascript">
     var xArray = ['false', 'half-true', 'mostly-true', 'true', 'barely-true', 'Liar']
     var yArray = JSON.parse('{{ y }}')
     console.log(yArray)
     console.log(xArray)
     var data = [{
-        x: xArray,
-        y: yArray,
-        type: "bar"  }];
-    var layout = {title:"World Wide Wine Production"};
+        labels: xArray,
+        values: yArray,
+        type: "pie"  }];
+    var layout = {title:"Probability of each class"};
 
 Plotly.newPlot("myPlot", data, layout);
 </script>
-<div class="container-fluid p-5 bg-light text-white text-center align-bottom">
-	<h1 class = 'text-black' >Reasoning</h1>
-	<p class = 'text-bg-light'>The diagram above shows the probabilities for each possible class as
-    assigned by the classifier. The most influential words are also highlighted and labeled to describe which
-    class they have been identified as. </p>
-</div>
-
 </body>
 </html>
