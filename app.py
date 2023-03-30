@@ -36,7 +36,7 @@ def home():
         explainer = LimeTextExplainer(class_names=class_names)
         text = request.form.get("statement")
         exp = explainer.explain_instance(text, get_array,
-                                         num_features=5, num_samples=50, top_labels=1)
+                                         num_features=5, num_samples=10, top_labels=1)
         prob = exp.predict_proba
         y = list(prob)
         exp = exp.as_html(predict_proba=False)
