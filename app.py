@@ -4,7 +4,7 @@ from flask import request
 import pickle
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 from lime.lime_text import LimeTextExplainer
-
+import torch
 app = Flask(__name__)
 
 
@@ -15,6 +15,9 @@ app = Flask(__name__)
 # Computes predicted probabilities for all classes for lime module
 def get_array(text):
     value = []
+    # Set random seed to make reproducible
+    rng = torch.default_generator
+    rng.manual_seed(42)
     # Load model and tokenizer from hugging face
     model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
     tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
