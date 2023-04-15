@@ -53,7 +53,7 @@ def home():
         prob = exp.predict_proba
         y = list(prob)
         # Generates html page to display probabilities
-        exp = exp.as_html(predict_proba=False)
+        exp = exp.as_html()
         return render_template('exp.html', exp=exp, y=y)
     return render_template("home.html")
 
