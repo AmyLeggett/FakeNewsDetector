@@ -59,43 +59,47 @@ def home():
         pred = loaded_model.predict(text)
         print(pred)
         if pred == [0]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[0])
+                                             num_features=5, num_samples=10, labels=[0])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='False', color_change='#FF3333', exp=exp)
         if pred == [1]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[1])
+                                             num_features=5, num_samples=10, labels=[1])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Half-true', color_change='#FF7C00', exp=exp)
         if pred == [2]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[2])
+                                             num_features=5, num_samples=10, labels=[2])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Mostly-true', color_change='#D4FF00', exp=exp)
         if pred == [3]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[3])
+                                             num_features=5, num_samples=10, labels=[3])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='True', color_change='#66CC00', exp=exp)
         if pred == [4]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[4])
+                                             num_features=5, num_samples=10, labels=[4])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Barely-true', color_change='#FF2D00', exp=exp)
         if pred == [5]:
+            # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[5])
+                                             num_features=5, num_samples=10, labels=[5])
+            # Generates html page to display information
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000', exp=exp)
-        # Gets text entered by user from form
-        # Explain prediction with the top 5 words , 10 samples and display explanation for the top label
-        # exp = explainer.explain_instance(text, get_array,
-        # num_features=5, num_samples=10000, top_labels=6)
-        # Gets probabilities for all classes from exp
-        # prob = exp.predict_proba
-        # y = list(prob)
-        # Generates html page to display probabilities
     return render_template("home.html")
 
 
