@@ -10,6 +10,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Explanation</title>
+    <style>
+        #form_text{
+            background-color: {{ color_change }};
+        }
+    </style>
 </head>
 <body>
 <!-- Navigation bar -->
@@ -23,20 +28,21 @@
   </div>
 </nav>
 <!-- Text for reasoning -->
-<div id = form_text class="container-fluid bg-dark p-5 text-white text-center">
-    <h1>The result is...</h1>
+<div id = form_text class="container-fluid p-5 text-white text-center">
+    <h1>The result is ... {{term}}</h1>
 </div>
 <div class="container-fluid p-5 bg-light text-white text-center align-bottom">
 	<h1 class = 'text-black' >Reasoning</h1>
-	<p class = 'text-bg-light'>The diagram below shows the probabilities for each possible class as
-    assigned by the classifier. The total may not add up to exactly 100% due to rounding. Below that, the most influential
-        words are also highlighted and labeled to describe which
-    class they have been identified as. </p>
     <!-- Graph plot and lime explanation -->
-    <center><div id="myPlot" style="width:75%;max-width:700px;"></div></center>
+    <!--<center><div id="myPlot" style="width:75%;max-width:700px;"></div></center>-->
+</div>
+<div class="container-fluid p-5 bg-light text-white text-center align-bottom">
+    <h2 class = 'text-bg-light'> The diagram below shows which words contributed to the result above.</h2>
+</div>
+<div class="container-fluid p-5 bg-light text-white text-center align-bottom">
     <center>{{ exp|safe }}</center>
 </div>
-<!-- Javascript function to generate pie chart -->
+<!-- Javascript function to generate pie chart
 <script type="text/javascript">
     var xArray = ['false', 'half-true', 'mostly-true', 'true', 'barely-true', 'Pants On Fire']
     var yArray = JSON.parse('{{ y }}')
@@ -48,7 +54,7 @@
         type: "pie"  }];
     var layout = {title:"Probability of each class"};
 
-Plotly.newPlot("myPlot", data, layout);
+Plotly.newPlot("myPlot", data, layout);-->
 </script>
 </body>
 </html>
