@@ -7,19 +7,18 @@ from lime.lime_text import LimeTextExplainer
 
 import torch
 app = Flask(__name__)
-
+# Set random seed to make reproducible
+rng = torch.default_generator
+rng.manual_seed(42)
+# Load model and tokenizer from hugging face
+model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+# Load pretrained model
+filename = 'model'
+loaded_model = pickle.load(open(filename, 'rb'))
 # Computes predicted probabilities for all classes for lime module
 def get_array(text):
     value = []
-    # Set random seed to make reproducible
-    rng = torch.default_generator
-    rng.manual_seed(42)
-    # Load model and tokenizer from hugging face
-    model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-    tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-    # Load pretrained model
-    filename = 'model'
-    loaded_model = pickle.load(open(filename, 'rb'))
     for i in range(len(text)):
         text[i] = ''.join(text[i])
         # Encode text and put through bert model
@@ -46,6 +45,13 @@ def home():
         # Explain prediction with the top 5 words , 10 samples and display explanation for the top label
         exp = explainer.explain_instance(text, get_array,
                                          num_features=5, num_samples=10, top_labels=1)
+        text = ''.join(text)
+        # Encode text and put through bert model
+        text = tokenizer.encode(text, return_tensors="pt")
+        text = model(text)
+        text = text.logits.detach().numpy()
+        probs = loaded_model.predict(text)
+        print(probs)
         # Gets probabilities for all classes from exp
         # Generates html page to display probabilities
         exp = exp.as_html(predict_proba=False)
