@@ -50,16 +50,11 @@ def home():
         # Gets users text input
         statement = request.form.get("statement")
         text = ''.join(statement)
-        print(1)
         # Encode text and put through bert model
         text = tokenizer.encode(text, return_tensors="pt")
-        print(2)
         text = model(text)
-        print(3)
         text = text.logits.detach().numpy()
-        print(4)
         pred = loaded_model.predict(text)
-        print(pred)
         if pred == [0]:
             # Initialises lime explainer
             explainer = LimeTextExplainer(class_names=class_names)
