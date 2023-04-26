@@ -95,11 +95,11 @@ def home():
             return render_template("exp.html", pred=pred, term='Barely-true', color_change='#FF2D00', exp=exp)
         if pred == [5]:
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
-            exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=10, labels=[5])
+            #exp = explainer.explain_instance(statement, get_array,
+                                             #num_features=5, num_samples=10, labels=[5])
             # Generates html page to display information
-            exp = exp.as_html(predict_proba=False)
-            return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000', exp=exp)
+            #exp = exp.as_html(predict_proba=False)
+            return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000',)
     return render_template("home.html")
 
 
