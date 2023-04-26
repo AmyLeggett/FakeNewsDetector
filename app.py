@@ -28,6 +28,7 @@ def get_array(text):
         text[i] = text[i].logits.detach().numpy()
         # Predict probabilities for encoded text through classifier
         proba = loaded_model.predict_proba(text[i])
+        probs = loaded_model.predict(text[i])
         value.append(proba.tolist()[0])
     return np.array(value)
 
@@ -46,11 +47,9 @@ def home():
         exp = explainer.explain_instance(text, get_array,
                                          num_features=5, num_samples=10, top_labels=1)
         # Gets probabilities for all classes from exp
-        prob = exp.predict_proba
-        y = list(prob)
         # Generates html page to display probabilities
         exp = exp.as_html(predict_proba=False)
-        return render_template('exp.html', exp=exp, y=y)
+        return render_template('exp.html', exp=exp)
     return render_template("home.html")
 
 
