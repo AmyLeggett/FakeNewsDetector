@@ -34,27 +34,25 @@ def get_array(text):
         value.append(proba.tolist()[0])
     return np.array(value)
 
-def tokens(text):
-    texts = ''.join(text)
-    # Encode text and put through bert model
-    texts = tokenizer.encode(texts, return_tensors="pt")
-    texts = model(texts)
-    texts = texts.logits.detach().numpy()
-    probs = loaded_model.predict_proba(texts)
-    return probs
 # Route for main page
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         text = request.form.get("statement")
+        texts = ''.join(text)
+        # Encode text and put through bert model
+        texts = tokenizer.encode(texts, return_tensors="pt")
+        texts = model(texts)
+        texts = texts.logits.detach().numpy()
+        probs = loaded_model.predict(texts)
+        # Gets probabilities for all classes from exp
+        # Generates html page to display probabilities
         # Labels for each class for lime explanations
         class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "Pants On Fire"]
         # Initialises lime explainer
         explainer = LimeTextExplainer(class_names=class_names)
         # Gets text entered by user from form
         # Explain prediction with the top 5 words , 10 samples and display explanation for the top label
-        proba = tokens(text)
-        print(proba)
         exp = explainer.explain_instance(text, get_array,
                                          num_features=5, num_samples=10, top_labels=1)
         exp = exp.as_html(predict_proba=False)
