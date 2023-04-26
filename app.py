@@ -47,18 +47,22 @@ def home():
     if request.method == "POST":
         # Labels for each class for lime explanations
         class_names = ["false", "half-true", "mostly-true", "true", "barely-true", "Pants On Fire"]
-        # Initialises lime explainer
-        explainer = LimeTextExplainer(class_names=class_names)
         # Gets users text input
         statement = request.form.get("statement")
         text = ''.join(statement)
+        print(1)
         # Encode text and put through bert model
         text = tokenizer.encode(text, return_tensors="pt")
+        print(2)
         text = model(text)
+        print(3)
         text = text.logits.detach().numpy()
+        print(4)
         pred = loaded_model.predict(text)
         print(pred)
         if pred == [0]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
                                              num_features=5, num_samples=10, labels=[0])
@@ -66,6 +70,8 @@ def home():
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='False', color_change='#FF3333', exp=exp)
         if pred == [1]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
                                              num_features=5, num_samples=10, labels=[1])
@@ -73,6 +79,8 @@ def home():
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Half-true', color_change='#FF7C00', exp=exp)
         if pred == [2]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
                                              num_features=5, num_samples=10, labels=[2])
@@ -80,6 +88,8 @@ def home():
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Mostly-true', color_change='#D4FF00', exp=exp)
         if pred == [3]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
                                              num_features=5, num_samples=10, labels=[3])
@@ -87,6 +97,8 @@ def home():
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='True', color_change='#66CC00', exp=exp)
         if pred == [4]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
             exp = explainer.explain_instance(statement, get_array,
                                              num_features=5, num_samples=10, labels=[4])
@@ -94,12 +106,14 @@ def home():
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Barely-true', color_change='#FF2D00', exp=exp)
         if pred == [5]:
+            # Initialises lime explainer
+            explainer = LimeTextExplainer(class_names=class_names)
             # Explain prediction with the top 5 words , 10 samples and display explanation for the given label
-            #exp = explainer.explain_instance(statement, get_array,
-                                             #num_features=5, num_samples=10, labels=[5])
+            exp = explainer.explain_instance(statement, get_array,
+                                             num_features=5, num_samples=10, labels=[5])
             # Generates html page to display information
-            #exp = exp.as_html(predict_proba=False)
-            return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000',)
+            exp = exp.as_html(predict_proba=False)
+            return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000', exp = exp)
     return render_template("home.html")
 
 
