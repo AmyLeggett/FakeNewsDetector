@@ -30,7 +30,7 @@ def home():
         texts = tokenizer.encode(texts, return_tensors="pt")
         texts = model(texts)
         texts = texts.logits.detach().numpy()
-        probs = loaded_model.predict(texts)
+        probs = loaded_model.predict_proba(texts)
         # Gets probabilities for all classes from exp
         # Generates html page to display probabilities
         # Labels for each class for lime explanations
