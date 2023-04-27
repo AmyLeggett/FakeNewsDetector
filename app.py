@@ -24,8 +24,8 @@ def tokenise(text):
     texts = tokenizer.encode(texts, return_tensors="pt")
     texts = model(texts)
     texts = texts.logits.detach().numpy()
-    return texts
-    # probs = loaded_model.predict_proba(texts)
+    probs = loaded_model.predict(texts)
+    return probs
 # Route for main page
 @app.route('/', methods=["GET", "POST"])
 def home():
