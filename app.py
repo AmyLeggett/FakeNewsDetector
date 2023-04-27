@@ -25,11 +25,11 @@ loaded_model = pickle.load(open(filename, 'rb'))
 def home():
     if request.method == "POST":
         text = request.form.get("statement")
-        texts = ''.join(text)
+        #texts = ''.join(text)
         # Encode text and put through bert model
-        texts = tokenizer.encode(texts, return_tensors="pt")
-        texts = model(texts)
-        texts = texts.logits.detach().numpy()
+        #texts = tokenizer.encode(texts, return_tensors="pt")
+        #texts = model(texts)
+        #texts = texts.logits.detach().numpy()
         #probs = loaded_model.predict_proba(texts)
         # Gets probabilities for all classes from exp
         # Generates html page to display probabilities
