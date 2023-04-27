@@ -8,17 +8,17 @@ from lime.lime_text import LimeTextExplainer
 import torch
 
 app = Flask(__name__)
-# Set random seed to make reproducible
-rng = torch.default_generator
-rng.manual_seed(42)
-# Load model and tokenizer from hugging face
-model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
-# Load pretrained model
-filename = 'model'
-loaded_model = pickle.load(open(filename, 'rb'))
 
 def tokenise(text):
+    # Set random seed to make reproducible
+    rng = torch.default_generator
+    rng.manual_seed(42)
+    # Load model and tokenizer from hugging face
+    model = AutoModelForSequenceClassification.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+    tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17-ner")
+    # Load pretrained model
+    filename = 'model'
+    loaded_model = pickle.load(open(filename, 'rb'))
     texts = ''.join(text)
     # Encode text and put through bert model
     texts = tokenizer.encode(texts, return_tensors="pt")
