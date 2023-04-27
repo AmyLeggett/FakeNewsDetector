@@ -18,22 +18,23 @@ tokenizer = AutoTokenizer.from_pretrained("muhtasham/bert-small-finetuned-wnut17
 filename = 'model'
 loaded_model = pickle.load(open(filename, 'rb'))
 
-
-
+def tokenise(text):
+    texts = ''.join(text)
+    # Encode text and put through bert model
+    texts = tokenizer.encode(texts, return_tensors="pt")
+    texts = model(texts)
+    texts = texts.logits.detach().numpy()
+    return texts
+    # probs = loaded_model.predict_proba(texts)
 # Route for main page
 @app.route('/', methods=["GET", "POST"])
 def home():
     if request.method == "POST":
         text = request.form.get("statement")
-        #texts = ''.join(text)
-        # Encode text and put through bert model
-        #texts = tokenizer.encode(texts, return_tensors="pt")
-        #texts = model(texts)
-        #texts = texts.logits.detach().numpy()
-        #probs = loaded_model.predict_proba(texts)
         # Gets probabilities for all classes from exp
         # Generates html page to display probabilities
         # Labels for each class for lime explanations
+        print(tokenise(text))
         return render_template('exp.html')
     return render_template("home.html")
 
