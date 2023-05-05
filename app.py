@@ -61,32 +61,32 @@ def home():
         print(pred)
         if pred == [0]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[0])
+                                             num_features=5, num_samples=10, labels=[0])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='False', color_change='#FF3333', exp=exp)
         if pred == [1]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[1])
+                                             num_features=5, num_samples=10, labels=[1])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Half-true', color_change='#FF7C00', exp=exp)
         if pred == [2]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[2])
+                                             num_features=5, num_samples=10, labels=[2])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Mostly-true', color_change='#D4FF00', exp=exp)
         if pred == [3]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[3])
+                                             num_features=5, num_samples=10, labels=[3])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='True', color_change='#66CC00', exp=exp)
         if pred == [4]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[4])
+                                             num_features=5, num_samples=10, labels=[4])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Barely-true', color_change='#FF2D00', exp=exp)
         if pred == [5]:
             exp = explainer.explain_instance(statement, get_array,
-                                             num_features=5, num_samples=50, labels=[5])
+                                             num_features=5, num_samples=10, labels=[5])
             exp = exp.as_html(predict_proba=False)
             return render_template("exp.html", pred=pred, term='Pants on Fire', color_change='#5A0000', exp=exp)
         return render_template('exp.html', exp=exp)
