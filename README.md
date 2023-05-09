@@ -14,6 +14,6 @@ Then finally run the app.py file in order to run the site on your machines local
 The original version of this site is available at :
 https://fakenewsdetect.onrender.com
 ## Acknowledgements
-https://github.com/marcotcr/lime
-https://huggingface.co/
-https://www.projectpro.io/article/bert-nlp-model-explained/558#mcetoc_1gil6m0ivq
+https://github.com/marcotcr/lime  
+https://huggingface.co/  
+https://www.projectpro.io/article/bert-nlp-model-explained/558#mcetoc_1gil6m0ivq  
