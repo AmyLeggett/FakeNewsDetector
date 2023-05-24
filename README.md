@@ -9,7 +9,7 @@ https://flask.palletsprojects.com/en/2.2.x/
 ## Getting started
 In order to run this application first clone the repo and open in your IDE of choice. 
 Then install the modules found in the requirements.txt file.
-Then finally run the app.py file in order to run the site on your machines local host
+Then finally run the app.py file in order to run the site on your machines local host.
 ## Link to site
 The original version of this site is available at :
 https://fakenewsdetect.onrender.com
@@ -17,3 +17,5 @@ https://fakenewsdetect.onrender.com
 https://github.com/marcotcr/lime  
 https://huggingface.co/  
 https://www.projectpro.io/article/bert-nlp-model-explained/558#mcetoc_1gil6m0ivq  
+https://huggingface.co/datasets/liar  
+https://huggingface.co/muhtasham/bert-small-finetuned-wnut17-ner
